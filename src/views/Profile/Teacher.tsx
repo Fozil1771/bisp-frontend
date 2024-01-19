@@ -1,61 +1,111 @@
+import { useEffect, useState } from "react";
 import { IUser } from "../../types";
+import { getAllCoursesByTeacher, getAllEnrolledStudentsByTeacher } from "../../api";
+import { Link } from "react-router-dom";
+import placeholderImg from '../../assets/english.jpg'
+
 
 interface IProps {
   user: IUser;
 }
 
 const Teacher: React.FC<IProps> = ({ user }) => {
+  const [participants, setParticipants] = useState([]);
+  const [courses, setCourses] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const dataStudents = await getAllEnrolledStudentsByTeacher(user.id);
+        const dataCourses = await getAllCoursesByTeacher(user.id);
+
+        setParticipants(dataStudents);
+        setCourses(dataCourses);
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [user.id])
+
+  console.log(participants);
+
+
+  const truncateText = (text: string, maxLength: number) => {
+    if (text) {
+      if (text.length <= maxLength) {
+        return text;
+      }
+      // Truncate text and add ellipsis
+      return text.slice(0, maxLength) + '...';
+    }
+    return;
+  };
+
   return (
-    <header className="bg-gray-900 mb-96 mx-auto">
-      <div className=" px-8 h-[22rem] lg:px-48 translate-y-64">
-        <img
-          src="/image/avatar1.jpg"
-          alt="avatar"
-          className="w-40 rounded-xl"
-        />
-        <div className="flex mt-16 justify-between">
-          <h5 className="text-3xl text-white">{user.username}</h5>
-          <button className="text-white border border-white px-4 py-2 rounded-md">follow</button>
-        </div>
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2 mt-3">
-            <span className="text-gray-900 font-bold">323</span>
-            <span className="text-gray-500 font-normal">Posts</span>
-          </div>
-          <div className="flex items-center gap-2 mt-3">
-            <span className="text-gray-900 font-bold">3.5k</span>
-            <span className="text-gray-500 font-normal">Followers</span>
-          </div>
-          <div className="flex items-center gap-2 mt-3">
-            <span className="text-gray-900 font-bold">260</span>
-            <span className="text-gray-500 font-normal">Following</span>
-          </div>
-        </div>
-        <p className="text-gray-500 mt-8">
-          A wordsmith who believes in the power of language to shape our world,
-          inspire change, and connect us all. I bring a unique perspective to
-          the writing, blending the knowledge and experiences into
-          thought-provoking narratives.
-        </p>
-        <button className="flex items-center gap-2 mt-2 text-white">
-          more about me
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="h-5 w-5 text-white"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
+    <>
+      <header className="bg-gray-900 mx-auto">
+        <div className=" p-8 lg:px-48">
+
+          <div className="flex mb-5 items-center gap-4">
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="avatar"
+              className="w-20 h-20 rounded-full object-fit"
             />
-          </svg>
-        </button>
+            <h5 className="text-3xl text-white">@{user.username}</h5>
+          </div>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 mt-3">
+              <span className="text-white font-bold">{courses.length}</span>
+              <span className="text-gray-500 font-normal">Courses</span>
+            </div>
+            <div className="flex items-center gap-2 mt-3">
+              <span className="text-white font-bold">{participants.length}</span>
+              <span className="text-gray-500 font-normal">Students</span>
+            </div>
+          </div>
+          <p className="text-gray-500 mt-8">
+            {user.bio}
+          </p>
+
+        </div>
+      </header >
+
+
+      <div className="container my-4 mx-auto">
+        <h3 className="text-2xl font-semibold mb-6">Courses</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+
+          {courses?.map(course => (
+            <Link to={`/profile/course/${user.id}/${course.id}`} key={course.id}>
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h4 className="text-2xl font-semibold mb-4">{course.title}</h4>
+                <img
+                  className="w-full h-40 object-cover mb-4 rounded-md"
+                  src={placeholderImg}
+                  alt={`Image for ${course.title}`}
+                />
+                <p className="text-gray-500 mb-4">{truncateText(course.description, 80)}</p>
+                <p className="text-gray-500 mb-4">Enrolled Students: {participants.length}</p>
+                <p className="text-gray-500 mb-4">Price: {course.price}</p>
+                {/* You can add more details or buttons here */}
+              </div>
+            </Link>
+          ))}
+          <Link to={`/profile/${user.id}/course/create`}>
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h4 className="text-2xl font-semibold mb-4">Create Course</h4>
+
+              <span className="text-gray-500 text-3xl text-center w-full block">+</span>
+            </div>
+          </Link>
+
+        </div>
       </div>
-    </header >
+    </>
+
   );
 }
 

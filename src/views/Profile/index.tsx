@@ -12,6 +12,7 @@ import Teacher from './Teacher';
 import Admin from './Admin';
 import { IAuthState } from '../../types';
 import { logoutAction } from '../../store/Auth/authAction';
+import Navbar from '../../components/global/Navbar';
 
 // interface ProfileProps {
 //   user: UserProfile;
@@ -19,7 +20,7 @@ import { logoutAction } from '../../store/Auth/authAction';
 
 const Profile = () => {
   // const navigate = useNavigate()
-  const dispatch = useDispatch();
+
   const user = useSelector((state: IAuthState) => state.auth?.user);
   console.log(user)
 
@@ -28,21 +29,14 @@ const Profile = () => {
     return (<Navigate to="/login" replace />)
   }
 
-  const handleLogout = () => {
-    dispatch(logoutAction());
-    return (<Navigate to="/login" replace />)
-  }
 
   return (
-    <Layout>
+    <>
+      <Navbar />
       {user.userType === 'student' ?
         <Student user={user} /> : user.userType === 'teacher'
           ? <Teacher user={user} /> : <Admin user={user} />}
-
-      <button
-        onClick={handleLogout}
-        className="text-white border border-white px-4 py-2 rounded-md">Logout</button>
-    </Layout>
+    </>
   );
 
 };

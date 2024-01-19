@@ -5,7 +5,9 @@ import Login from "../views/Auth/Login";
 import Profile from "../views/Profile";
 import NotFound from "../views/NotFound";
 import { useSelector } from "react-redux";
-
+import { CourseDetail, CourseCreate } from "../views/CourseCreation";
+import { SingleCourse } from "../views/CoursePublic";
+import AllCourses from "../views/CoursePublic/AllCourses";
 
 const isAuthenticated = () => {
   // Replace 'auth' with the actual slice name in your Redux store
@@ -14,6 +16,15 @@ const isAuthenticated = () => {
     return redirect('/login')
   }
   return isAuthenticated;
+};
+
+const isTeacher = () => {
+  // Replace 'auth' with the actual slice name in your Redux store
+  const user = useSelector((state) => state.auth?.user);
+  if (user.userType !== 'teacher') {
+    return false
+  }
+  return true;
 };
 
 export const router = createBrowserRouter([
@@ -43,6 +54,24 @@ export const router = createBrowserRouter([
         // You may want to add authentication logic here before rendering the Profile component
         Component: Profile,
       },
+      {
+        path: "profile/:teacherId/course/create",
+        Component: CourseCreate,
+      },
+      {
+        path: "profile/course/:teacherId/:id",
+        action: isTeacher,
+        Component: CourseDetail
+      },
+      {
+        path: "course/:id",
+        Component: SingleCourse,
+      },
+      {
+        path: "courses/all",
+        Component: AllCourses,
+      },
+
     ],
   },
   {

@@ -28,9 +28,9 @@ const Login = () => {
     try {
       const response = await logIn(formData.userType, formData);
 
-      const { user } = response;
+      const { user, token } = response;
       // user.userType = formData.userType;
-      dispatch(setUserAction({ ...user, userType: formData.userType }));
+      dispatch(setUserAction({ ...user, userType: formData.userType, token }));
       navigate('/profile');
       console.log('Form Data:', formData);
     } catch (error) {
@@ -93,7 +93,7 @@ const Login = () => {
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
               required
             >
-              <option value="user">User</option>
+              <option value="student">Student</option>
               <option value="admin">Admin</option>
               <option value="teacher">Teacher</option>
               {/* Add more user types as needed */}

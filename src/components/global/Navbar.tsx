@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { AuthState } from '../../types'
+import { logoutAction } from '../../store/Auth/authAction'
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector((state: AuthState) => state.auth.isAuthenticated)
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
@@ -11,7 +13,7 @@ const Navbar = () => {
 
   const links = [
     { text: 'Home', to: '/' },
-    { text: 'Course', to: '/courses' },
+    { text: 'Course', to: '/courses/all' },
     { text: 'Login', to: '/login', hide: isAuthenticated },
     { text: 'SignUp', to: '/signup', hide: isAuthenticated },
   ]
@@ -19,9 +21,14 @@ const Navbar = () => {
   const activeClass = 'text-white bg-gray-900'
   const inactiveClass = 'text-gray-300 hover:text-white hover:bg-gray-700'
 
+  const handleLogOut = () => {
+    dispatch(logoutAction());
+    return (<Navigate to="/login" replace />)
+  }
+
   return (
-    <nav className="bg-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-gray-800 relative z-50">
+      <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -57,14 +64,14 @@ const Navbar = () => {
               <div className="ml-3 relative">
                 <div>
                   <button
-                    className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    className="max-w-xs bg-gray-800 text-white rounded-full flex items-center text-sm focus:outline-none focus:ring-offset-gray-800 focus:ring-white"
                     id="user-menu"
                     aria-label="User menu"
                     aria-haspopup="true"
                     onClick={() => setShowProfileMenu(!showProfileMenu)}
                   >
                     <span className="sr-only">Open user menu</span>
-                    profile
+                    Profile
                   </button>
                 </div>
                 {/*  
@@ -102,6 +109,7 @@ const Navbar = () => {
                       <button
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         role="menuitem"
+                        onClick={handleLogOut}
                       >
                         Sign out
                       </button>

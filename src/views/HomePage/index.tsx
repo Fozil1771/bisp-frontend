@@ -1,10 +1,12 @@
-import Layout from "../../components/Layout"
+import Main from "../../components/Main"
+import Navbar from "../../components/global/Navbar"
 
 const HomePage = () => {
   return (
-    <Layout>
-      <div>Homepage</div>
-    </Layout>
+    <>
+      <Navbar />
+      <Main />
+    </>
   )
 }
 
