@@ -3,6 +3,7 @@ import { IUser } from "../../types";
 import { getAllCoursesByTeacher, getAllEnrolledStudentsByTeacher } from "../../api";
 import { Link } from "react-router-dom";
 import placeholderImg from '../../assets/english.jpg'
+import { truncateText } from "../../utils";
 
 
 interface IProps {
@@ -31,17 +32,6 @@ const Teacher: React.FC<IProps> = ({ user }) => {
 
   console.log(participants);
 
-
-  const truncateText = (text: string, maxLength: number) => {
-    if (text) {
-      if (text.length <= maxLength) {
-        return text;
-      }
-      // Truncate text and add ellipsis
-      return text.slice(0, maxLength) + '...';
-    }
-    return;
-  };
 
   return (
     <>

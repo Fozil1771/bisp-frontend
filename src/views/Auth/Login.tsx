@@ -12,7 +12,7 @@ const Login = () => {
     username: '',
     email: '',
     password: '',
-    userType: 'user', // Default user type (you can modify this as needed)
+    userType: 'student', // Default user type (you can modify this as needed)
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

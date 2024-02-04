@@ -14,6 +14,7 @@ const Navbar = () => {
   const links = [
     { text: 'Home', to: '/' },
     { text: 'Course', to: '/courses/all' },
+    { text: 'About us', to: '/about-us' },
     { text: 'Login', to: '/login', hide: isAuthenticated },
     { text: 'SignUp', to: '/signup', hide: isAuthenticated },
   ]
@@ -32,7 +33,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h4 className="text-white">Learning Language</h4>
+              <Link to={"/"}><h4 className="text-white">Learn Online</h4></Link>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">

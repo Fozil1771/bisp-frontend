@@ -1,10 +1,29 @@
+import { useEffect, useState } from "react";
 import { IUser } from "../../types"
+import { getEnrolledCourses } from "../../api";
+import { useParams } from "react-router-dom";
+import { CourseList } from "../../Course";
 
 interface IProps {
   user: IUser;
 }
 
 const Student: React.FC<IProps> = ({ user }) => {
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getEnrolledCourses(user.id);
+        setEnrolledCourses(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, [user])
+
+
   return (
     <div className="">
       <header className="bg-gray-900 mx-auto">
@@ -32,6 +51,10 @@ const Student: React.FC<IProps> = ({ user }) => {
         </div>
       </header >
       {/* Add more user-related fields as needed */}
+
+      <div className="container mx-auto">
+        <CourseList courses={enrolledCourses} title={"Enrolled Courses"} />
+      </div>
     </div>
   )
 }

@@ -46,6 +46,14 @@ export const deleteCourseChapter = async (teacherId: string, courseId: string, c
 }
 
 
+// student
+
+export const getEnrolledCourses = async (id: string) => {
+  const response = await api.get(`/student/${id}/enrolled-courses`)
+  return response.data;
+}
+
+
 // public apis
 
 

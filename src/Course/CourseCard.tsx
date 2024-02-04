@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import placeholderImg from '../assets/english.jpg'
+import { truncateText } from '../utils';
 
 interface CourseCardProps {
   courseId: string;
@@ -20,7 +21,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ courseId, title, description, i
         />
         <h4 className="text-2xl font-semibold mb-2">{title}</h4>
       </Link>
-      <p className="text-gray-500 mb-4">{description}</p>
+      <p className="text-gray-500 mb-4">{truncateText(description, 100)}</p>
       <Link to={`/course/${courseId}`} className="text-blue-500 hover:underline">
         Learn more
       </Link>

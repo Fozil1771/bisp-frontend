@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { CourseDetail, CourseCreate } from "../views/CourseCreation";
 import { SingleCourse } from "../views/CoursePublic";
 import AllCourses from "../views/CoursePublic/AllCourses";
+import AboutPage from "../views/About";
 
 const isAuthenticated = () => {
   // Replace 'auth' with the actual slice name in your Redux store
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: "courses/all",
         Component: AllCourses,
+      },
+      {
+        path: "about-us",
+        Component: AboutPage,
       },
 
     ],

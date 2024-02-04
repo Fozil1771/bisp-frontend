@@ -24,10 +24,12 @@ function getTokenFromStorage() {
   if (persistedState) {
     const parsedState = JSON.parse(persistedState);
     const authState = JSON.parse(parsedState.auth);
-    const userState = authState.user;
+    const userState = authState?.user;
 
-    const { token } = userState;
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    if (userState) {
+      const { token } = userState;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
   }
 }
 
