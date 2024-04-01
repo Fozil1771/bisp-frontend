@@ -1,86 +1,87 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { getCoursePublicById } from '../../api';  // Replace with your actual API function
-import { INITIAL_DATA } from '../../constants';
-import { Editor } from '../../components/Editor';
+import { useParams, Link } from 'react-router-dom';
+import { enrollToCourse, getCoursePublicById } from '../../api';
 import Loader from '../../components/Loader';
 import Navbar from '../../components/global/Navbar';
+import { useSelector } from 'react-redux';
+import { IAuthState } from '../../types';
 
 const SingleCourse = () => {
   const { id } = useParams();
-  console.log(useParams())
   const [course, setCourse] = useState(null);
-  const [activeChapter, setActiveChapter] = useState(null);
-  const [data, setData] = useState(INITIAL_DATA);
   const [loading, setLoading] = useState(true);
+  const [isEnrolled, setIsEnrolled] = useState(false);
+
+  const user = useSelector((state: IAuthState) => state.auth?.user);
 
   useEffect(() => {
     const fetchCourse = async () => {
       try {
         const fetchedCourse = await getCoursePublicById(id);
         setCourse(fetchedCourse);
-        setActiveChapter(fetchedCourse.chapters[0]);  // Set the first chapter as active by default
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching course:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchCourse();
+
   }, [id]);
 
-  useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, [loading]);
+  if (user.userType == 'student') {
 
-  const handleChapterClick = (chapter) => {
-    setActiveChapter(chapter);
-    setData(chapter.description);
-    setLoading(true);
-  };
+    console.log(course?.participants.filter((participant) => participant.id === user.id)[0])
+    if (course?.participants?.includes(user.id)) {
+      setIsEnrolled(true);
+    }
+  }
+
+
+  const handleSubscribeToCourse = async (course) => {
+    try {
+      const response = await enrollToCourse(user.id, course.id);
+      console.log(response);
+    } catch (error) {
+      console.error('Error subscribing to course:', error);
+    }
+  }
 
   return (
     <>
       <Navbar />
       <div className='container mx-auto h-[100vh]'>
-
         {/* Sidebar */}
         {loading ? <Loader loading={loading} /> : (
-          <div className='flex'>
-            <div className="w-1/5 py-8 px-4 border-r h-[100vh]">
-              <h2 className="text-xl font-semibold mb-4">Chapters</h2>
-              <ul>
-                {course?.chapters.map((chapter) => (
-                  <li
-                    key={chapter.id}
-                    className={`mb-2 cursor-pointer p-2 rounded-md ${activeChapter?.id === chapter.id ? 'bg-cyan-500 text-white' : ''}`}
-                    onClick={() => handleChapterClick(chapter)}
-                  >
-                    {chapter.title}
-                  </li>
-                ))}
-              </ul>
+          <>
+            <div className="flex flex-col md:flex-row md:justify-between mt-5">
+              {/* Course Details */}
+              <div className="md:w-3/4">
+                <h1 className="text-3xl font-bold mb-4">{course?.title}</h1>
+                <p className="text-lg mb-4">{course?.description}</p>
+                <p className="text-lg">Type: {course?.type}</p>
+                <p className="text-lg">Price: ${course?.price}</p>
+
+                {user.userType == 'student' && !course?.participants.filter((participant) => participant.id === user.id)[0] && <button onClick={() => { handleSubscribeToCourse(course) }} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md inline-block">
+                  Subscribe to Course
+                </button>}
+              </div>
+              {/* Link to Chapters */}
+              <div className="md:w-1/4 mt-4 md:mt-0">
+                {user.userType == 'student' && course?.participants.filter((participant) => participant.id === user.id)[0] &&
+                  <Link to={`/course/${id}/chapters`} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-block">
+                    View Chapters
+                  </Link>
+                }
+
+                {user.userType == 'teacher' &&
+                  <Link to={`/course/${id}/chapters`} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-block">
+                    View Chapters
+                  </Link>
+                }
+              </div>
             </div>
-
-            <div className="flex-grow p-8">
-              <h1 className="text-2xl font-semibold mb-4">{course?.title}</h1>
-
-              {/* Display Active Chapter Content */}
-              {activeChapter && (
-                <div>
-                  <h2 className="text-xl font-semibold mb-2">{activeChapter.title}</h2>
-
-                  {data ? <Editor data={data} onChange={setData} editorblock="editorjs-container" /> :
-                    <Editor data={INITIAL_DATA} onChange={setData} editorblock="editorjs-container" />
-                  }
-                </div>
-              )}
-            </div>
-          </div>
+          </>
         )}
       </div>
     </>

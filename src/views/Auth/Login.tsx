@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUserAction } from '../../store/Auth/authAction';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logIn } from '../../api';
 
 const Login = () => {
@@ -105,6 +105,12 @@ const Login = () => {
           >
             Login
           </button>
+          <p className="text-center mt-4">
+            Don't have an account?{' '}
+            <Link to={"/signup"} className="text-blue-500 hover:text-blue-700">
+              Sign up
+            </Link>
+          </p>
         </form>
       </div>
     </div>

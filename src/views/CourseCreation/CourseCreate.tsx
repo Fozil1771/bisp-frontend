@@ -6,6 +6,7 @@ import { redirect, useParams } from 'react-router-dom';
 
 const CourseCreate: React.FC = () => {
   const { teacherId } = useParams();
+
   const [courseData, setCourseData] = useState({
     title: '',
     type: '',
@@ -28,8 +29,7 @@ const CourseCreate: React.FC = () => {
       // Call the API to create a course
       console.log(courseData)
       await createCourse({ ...courseData, teacherId: teacherId });
-      redirect(`/profile`);
-      console.log('Course created:', courseData);
+      return redirect(`/profile`);
     } catch (error) {
       console.error('Error creating course:', error);
     }

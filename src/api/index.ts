@@ -23,11 +23,21 @@ export const getAllCoursesByTeacher = async (id: string) => {
   return response.data;
 }
 
+export const getAllTeacherList = async () => {
+  const response = await api.get(`/teacher`)
+  return response.data;
+}
+
+export const getTeacherById = async (teacherId: string) => {
+  const response = await api.get(`/teacher/${teacherId}`)
+  return response.data;
+}
 
 export const getCourseByTeacher = async (teacherId: string, id: string) => {
   const response = await api.get(`/course/${teacherId}/${id}`)
   return response.data;
 }
+
 
 export const createCourse = async (data) => {
   const response = await api.post(`/course`, data)
@@ -46,6 +56,9 @@ export const deleteCourseChapter = async (teacherId: string, courseId: string, c
 }
 
 
+
+
+
 // student
 
 export const getEnrolledCourses = async (id: string) => {
@@ -53,6 +66,23 @@ export const getEnrolledCourses = async (id: string) => {
   return response.data;
 }
 
+export const subscribeToCourse = async (id: string, data) => {
+  const response = await api.post(`/student/${id}/create-checkout-session`, { item: data })
+  return response.data;
+}
+
+export const enrollToCourse = async (studentId: string, courseId: string) => {
+  const response = await api.post(`/student/${studentId}/enroll/${courseId}`)
+  return response.data;
+}
+
+
+// admin
+
+export const verifyTeacherByAdmin = async (teacherId: string, data: string, isVerified: boolean) => {
+  const response = await api.post(`/admin/verify-teacher/${teacherId}`, { adminId: data, isVerified: isVerified })
+  return response.data;
+}
 
 // public apis
 

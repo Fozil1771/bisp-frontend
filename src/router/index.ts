@@ -9,6 +9,8 @@ import { CourseDetail, CourseCreate } from "../views/CourseCreation";
 import { SingleCourse } from "../views/CoursePublic";
 import AllCourses from "../views/CoursePublic/AllCourses";
 import AboutPage from "../views/About";
+import TeacherDetailsPage from "../views/Admin/teacherDetailsPage";
+import SingleCourseContents from "../views/CoursePublic/SingleCourseContents";
 
 const isAuthenticated = () => {
   // Replace 'auth' with the actual slice name in your Redux store
@@ -28,6 +30,15 @@ const isTeacher = () => {
   return true;
 };
 
+const isAdmin = () => {
+  // Replace 'auth' with the actual slice name in your Redux store
+  const user = useSelector((state) => state.auth?.user);
+  if (user.userType !== 'admin') {
+    return false
+  }
+  return true;
+};
+
 export const router = createBrowserRouter([
   {
     id: "root",
@@ -42,15 +53,15 @@ export const router = createBrowserRouter([
         Component: HomePage,
       },
       {
-        path: "login",
+        path: "/login",
         Component: Login,
       },
       {
-        path: "signup",
+        path: "/signup",
         Component: Signup,
       },
       {
-        path: "profile",
+        path: "/profile",
         action: isAuthenticated,
         // You may want to add authentication logic here before rendering the Profile component
         Component: Profile,
@@ -63,6 +74,15 @@ export const router = createBrowserRouter([
         path: "profile/course/:teacherId/:id",
         action: isTeacher,
         Component: CourseDetail
+      },
+      {
+        path: "teacher-details/:teacherId",
+        action: isAdmin,
+        Component: TeacherDetailsPage
+      },
+      {
+        path: "course/:id/chapters",
+        Component: SingleCourseContents,
       },
       {
         path: "course/:id",

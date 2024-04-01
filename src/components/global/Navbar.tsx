@@ -94,14 +94,14 @@ const Navbar = () => {
                       aria-labelledby="user-menu"
                     >
                       <Link
-                        to="profile"
+                        to="/profile"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         role="menuitem"
                       >
                         Your Profile
                       </Link>
                       <Link
-                        to="profile/settings"
+                        to="/profile/settings"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         role="menuitem"
                       >

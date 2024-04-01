@@ -1,6 +1,6 @@
 // Signup.js
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signUp } from '../../api';
 
 
@@ -119,7 +119,6 @@ const Signup = () => {
               required
             >
               <option value="student">Student</option>
-              <option value="admin">Admin</option>
               <option value="teacher">Teacher</option>
               {/* Add more user types as needed */}
             </select>
@@ -130,6 +129,12 @@ const Signup = () => {
           >
             Signup
           </button>
+          <p className="text-center mt-4">
+            Already have an account?{' '}
+            <Link to={"/login"} className="text-blue-500 hover:text-blue-700">
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </div>

@@ -12,6 +12,7 @@ import {
 } from 'redux-persist'
 
 import authReducer from './Auth/authSlice';
+import teachersReducer from './Users/teachersSlice';
 
 
 const persistConfig = {
@@ -21,6 +22,7 @@ const persistConfig = {
 
 export const rootReducers = combineReducers({
   auth: authReducer,
+  teachers: teachersReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducers)
