@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate, useLocation } from 'react-router-dom'
-import { AuthState } from '../../types'
+import { IAuthState } from '../../types'
 import { logoutAction } from '../../store/Auth/authAction'
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state: AuthState) => state.auth.isAuthenticated)
+  const isAuthenticated = useSelector((state: IAuthState) => state.auth.isAuthenticated)
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const location = useLocation();
@@ -107,13 +107,14 @@ const Navbar = () => {
                       >
                         Settings
                       </Link>
-                      <button
+                      <Link
+                        to={'/login'}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         role="menuitem"
                         onClick={handleLogOut}
                       >
                         Sign out
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}

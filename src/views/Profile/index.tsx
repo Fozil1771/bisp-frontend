@@ -11,7 +11,6 @@ import Student from './Student';
 import Teacher from './Teacher';
 import Admin from './Admin';
 import { IAuthState } from '../../types';
-import { logoutAction } from '../../store/Auth/authAction';
 import Navbar from '../../components/global/Navbar';
 
 // interface ProfileProps {
@@ -22,7 +21,6 @@ const Profile = () => {
   // const navigate = useNavigate()
 
   const user = useSelector((state: IAuthState) => state.auth?.user);
-  console.log(user)
 
 
   if (!user) {

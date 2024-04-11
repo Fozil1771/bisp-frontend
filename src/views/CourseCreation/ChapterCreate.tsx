@@ -41,7 +41,7 @@ const ChapterCreate = ({ course, setLoading }) => {
 
   return (
     <div className="mx-auto mt-8 p-6 bg-white rounded-md shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Create New Course</h2>
+      <h2 className="text-2xl font-semibold mb-4">Create New Course Chapter</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="title" className="block text-sm font-medium text-gray-600">

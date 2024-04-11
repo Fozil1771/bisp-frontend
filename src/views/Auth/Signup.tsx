@@ -120,6 +120,7 @@ const Signup = () => {
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
+              <option value="admin">admin</option>
               {/* Add more user types as needed */}
             </select>
           </div>

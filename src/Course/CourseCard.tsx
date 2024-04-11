@@ -1,22 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import placeholderImg from '../assets/english.jpg'
 import { truncateText } from '../utils';
 
 interface CourseCardProps {
   courseId: string;
   title: string;
   description: string;
-  imageUrl: string;
+  banner: string;
 }
 
-const CourseCard: React.FC<CourseCardProps> = ({ courseId, title, description, imageUrl }) => {
+const CourseCard: React.FC<CourseCardProps> = ({ courseId, title, description, banner }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <Link to={`/course/${courseId}`}>
         <img
           className="w-full h-40 object-cover mb-4 rounded-md"
-          src={placeholderImg}
+          src={`http://localhost:3003/public/course/${banner}`}
           alt={`Image for ${title}`}
         />
         <h4 className="text-2xl font-semibold mb-2">{title}</h4>

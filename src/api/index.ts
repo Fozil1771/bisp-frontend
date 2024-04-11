@@ -33,6 +33,11 @@ export const getTeacherById = async (teacherId: string) => {
   return response.data;
 }
 
+export const editTeacherById = async (teacherId: string, data) => {
+  const response = await api.post(`/teacher/update/${teacherId}`, data)
+  return response.data;
+}
+
 export const getCourseByTeacher = async (teacherId: string, id: string) => {
   const response = await api.get(`/course/${teacherId}/${id}`)
   return response.data;
@@ -43,6 +48,19 @@ export const createCourse = async (data) => {
   const response = await api.post(`/course`, data)
   return response.data;
 }
+
+export const uploadCourseImage = async (data) => {
+  const response = await api.post(`/course/image`, data)
+  return response.data;
+}
+
+
+// rating
+export const createCourseRating = async (courseId: string, studentId: string, data) => {
+  const response = await api.post(`/course/${courseId}/${studentId}/rating`, data)
+  return response.data;
+}
+
 
 // /course/:teacherId/:courseId
 export const createCourseChapter = async (teacherId: string, courseId: string, data) => {
@@ -76,6 +94,10 @@ export const enrollToCourse = async (studentId: string, courseId: string) => {
   return response.data;
 }
 
+export const editStudentById = async (studentId: string, data) => {
+  const response = await api.post(`/student/update/${studentId}`, data)
+  return response.data;
+}
 
 // admin
 

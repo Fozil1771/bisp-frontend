@@ -11,6 +11,7 @@ import AllCourses from "../views/CoursePublic/AllCourses";
 import AboutPage from "../views/About";
 import TeacherDetailsPage from "../views/Admin/teacherDetailsPage";
 import SingleCourseContents from "../views/CoursePublic/SingleCourseContents";
+import SettingsPage from "../views/Profile/Settings";
 
 const isAuthenticated = () => {
   // Replace 'auth' with the actual slice name in your Redux store
@@ -65,6 +66,12 @@ export const router = createBrowserRouter([
         action: isAuthenticated,
         // You may want to add authentication logic here before rendering the Profile component
         Component: Profile,
+      },
+      {
+        path: "/profile/settings",
+        action: isAuthenticated,
+        // You may want to add authentication logic here before rendering the Profile component
+        Component: SettingsPage,
       },
       {
         path: "profile/:teacherId/course/create",

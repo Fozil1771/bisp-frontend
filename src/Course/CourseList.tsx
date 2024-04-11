@@ -5,7 +5,7 @@ interface Course {
   id: string;
   title: string;
   description: string;
-  imageUrl: string; // Add imageUrl to your Course interface
+  banner: string; // Add imageUrl to your Course interface
 }
 
 interface CoursesListProps {
@@ -24,7 +24,7 @@ const CoursesList: React.FC<CoursesListProps> = ({ courses, title }) => {
             courseId={course.id}
             title={course.title}
             description={course.description}
-            imageUrl={course.imageUrl}
+            banner={course.banner}
           />
         ))}
       </div>

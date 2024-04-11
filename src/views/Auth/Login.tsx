@@ -30,9 +30,10 @@ const Login = () => {
 
       const { user, token } = response;
       // user.userType = formData.userType;
+      user.password = ""
       dispatch(setUserAction({ ...user, userType: formData.userType, token }));
       navigate('/profile');
-      console.log('Form Data:', formData);
+
     } catch (error) {
       console.error('Signup Error:', error);
     }
