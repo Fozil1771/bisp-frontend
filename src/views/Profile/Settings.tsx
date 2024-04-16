@@ -14,10 +14,10 @@ const SettingsPage = () => {
   const user = useSelector((state: IAuthState) => state.auth?.user);
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    bio: '',
+    firstName: user.firstName,
+    lastName: user.lastName,
+    username: user.username,
+    bio: user.bio,
     password: '',
     confirmPassword: '',
   });
@@ -144,6 +144,7 @@ const SettingsPage = () => {
               id="firstName"
               name="firstName"
               value={formData.firstName}
+              defaultValue={user.firstName}
               onChange={handleChange}
               className="mt-1 p-2 block w-full text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             />
@@ -157,6 +158,7 @@ const SettingsPage = () => {
               id="lastName"
               name="lastName"
               value={formData.lastName}
+              defaultValue={user.lastName}
               onChange={handleChange}
               className="mt-1 p-2 block w-full text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             />
@@ -170,6 +172,7 @@ const SettingsPage = () => {
               id="username"
               name="username"
               value={formData.username}
+              defaultValue={user.username}
               onChange={handleChange}
               className="mt-1 p-2 block w-full text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             />
@@ -196,6 +199,7 @@ const SettingsPage = () => {
               id="bio"
               name="bio"
               value={formData.bio}
+              defaultValue={user.bio}
               onChange={handleChange}
               className="mt-1 p-2 block w-full text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             />

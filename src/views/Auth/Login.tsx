@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUserAction } from '../../store/Auth/authAction';
 import { Link, useNavigate } from "react-router-dom";
-import { logIn } from '../../api';
+import { getCourseList, logIn } from '../../api';
+import { setCoursesAction } from '../../store/Course/courseAction';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -29,14 +30,19 @@ const Login = () => {
       const response = await logIn(formData.userType, formData);
 
       const { user, token } = response;
+      const dataCourses = await getCourseList();
+      dispatch(setCoursesAction(dataCourses));
       // user.userType = formData.userType;
       user.password = ""
       dispatch(setUserAction({ ...user, userType: formData.userType, token }));
+
+
       navigate('/profile');
 
     } catch (error) {
       console.error('Signup Error:', error);
     }
+
   };
 
   return (

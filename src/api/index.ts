@@ -34,7 +34,7 @@ export const getTeacherById = async (teacherId: string) => {
 }
 
 export const editTeacherById = async (teacherId: string, data) => {
-  const response = await api.post(`/teacher/update/${teacherId}`, data)
+  const response = await api.put(`/teacher/update/${teacherId}`, data)
   return response.data;
 }
 

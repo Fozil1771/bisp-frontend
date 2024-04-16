@@ -1,12 +1,15 @@
 // CourseCreate.tsx
 
 import React, { useEffect, useState } from 'react';
-import { createCourse, uploadCourseImage } from '../../api';
+import { createCourse, getCourseList, uploadCourseImage } from '../../api';
 import { Navigate, redirect, useNavigate, useParams } from 'react-router-dom';
 import Compressor from 'compressorjs';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setCoursesAction } from '../../store/Course/courseAction';
 
 const CourseCreate: React.FC = () => {
+  const dispatch = useDispatch();
   const { teacherId } = useParams();
   const navigate = useNavigate();
 
