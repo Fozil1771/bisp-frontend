@@ -2,15 +2,20 @@ import { useState } from 'react';
 import { createCourseChapter } from '../../api';
 import { Editor } from '../../components/Editor';
 import { INITIAL_DATA } from '../../constants';
+import EditorQ from '../../components/Editor/QuilEditor';
+// import { Editor } from 'primereact/editor';
 
-const ChapterCreate = ({ course, setLoading }) => {
-  const { teacherId, id } = course.course;
+
+const ChapterCreate = ({ course, setLoading, updateChapterList }) => {
+  const { teacherId, id, html } = course.course;
+
+  const [text, setText] = useState('');
 
   const [data, setData] = useState(INITIAL_DATA);
   const [formData, setFormData] = useState({
     title: '',
     isPublished: false,
-    isFree: true,
+    isFree: false,
   });
 
   const handleChange = (e) => {
@@ -22,19 +27,27 @@ const ChapterCreate = ({ course, setLoading }) => {
     }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       console.log(teacherId, id)
       // Call the API to create a chapter
-      const newChapter = await createCourseChapter(teacherId, id, { ...formData, description: data });
-      console.log('Chapter created:', newChapter);
-      // Reload or redirect to the course chapters page
+      const newChapter = await createCourseChapter(teacherId, id, { ...formData, description: data, html: text });
+
+      updateChapterList([...course.chapters, newChapter]);
+
+      // setting the form data to initial state
+      setText("");
+      setFormData({
+        title: '',
+        isPublished: false,
+        isFree: false,
+      })
     } catch (error) {
       console.error('Error creating chapter:', error);
     } finally {
       setLoading(false);
-      window.location.reload();
     }
   };
 
@@ -62,8 +75,13 @@ const ChapterCreate = ({ course, setLoading }) => {
           <label htmlFor="description" className="block text-sm font-medium text-gray-600">
             Description
           </label>
-          <Editor data={data} onChange={setData} editorblock="editorjs-container" />
-
+          {/* <Editor
+            value={text}
+            onTextChange={(e) => setText(e.htmlValue)}
+            style={{ height: '320px' }}
+          /> */}
+          {/* <Editor data={data} onChange={setData} editorblock="editorjs-container" /> */}
+          <EditorQ value={text} setValue={setText} />
         </div>
 
         <div className="mb-4">

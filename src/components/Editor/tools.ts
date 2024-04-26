@@ -22,8 +22,16 @@ export const EDITOR_JS_TOOLS = {
   warning: Warning,
   code: Code,
   linkTool: LinkTool,
-  image: Image,
   raw: Raw,
+  image: {
+    class: Image,
+    config: {
+      endpoints: {
+        byFile: 'http://localhost:3003/course/uploadFile', // Your backend file uploader endpoint
+        byUrl: 'http://localhost:3003/public/course', // Your endpoint that provides uploading by Url
+      }
+    }
+  },
   header: Header,
   quote: Quote,
   checklist: CheckList,

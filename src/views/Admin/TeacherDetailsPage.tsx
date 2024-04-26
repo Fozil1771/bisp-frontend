@@ -6,12 +6,12 @@ import { useSelector } from 'react-redux';
 
 const TeacherDetailsPage = () => {
   const { teacherId } = useParams();
-  const teacher = useSelector((state) => state.teachers.teachers).filter((teacher) => teacher.id === teacherId)[0];
+  const teacherData = useSelector((state) => state.teachers.teachers).filter((teacher) => teacher.id === teacherId)[0];
   const user = useSelector((state) => state.auth.user)
 
 
   const [isVerifying, setIsVerifying] = useState(false);
-  // const [teacher, setTeacher] = useState(null);
+  const [teacher, setTeacher] = useState(teacherData);
   const [loading, setLoading] = useState(false);
   console.log(user.id)
 
@@ -20,6 +20,7 @@ const TeacherDetailsPage = () => {
     try {
       setIsVerifying(true);
       await verifyTeacherByAdmin(teacher.id, user.id, isVerified);
+      setTeacher({ ...teacher, verifiedTeacher: isVerified });
 
     } catch (error) {
       console.error('Error verifying teacher:', error);
@@ -35,10 +36,10 @@ const TeacherDetailsPage = () => {
         <h1>Teacher Details</h1>
         <p>Name: {teacher?.firstName} {teacher?.lastName}</p>
         <p>Email: {teacher?.email}</p>
-        <p>Verification Status: {teacher?.verifiedTeacher ? 'Verified' : 'Not Verified'} by {teacher.admin.username}</p>
+        <p>Verification Status: {teacher?.verifiedTeacher ? 'Verified' : 'Not Verified'} updated by {teacher?.admin?.username}</p>
 
         <p>Courses</p>
-        <pre>{JSON.stringify(teacher?.courses, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(teacher?.courses, null, 2)}</pre> */}
         <ul>
           {teacher?.courses.map(course => (
             <div key={course.id}>

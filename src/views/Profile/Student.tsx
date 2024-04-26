@@ -3,6 +3,7 @@ import { IUser } from "../../types"
 import { getEnrolledCourses } from "../../api";
 import { useParams } from "react-router-dom";
 import { CourseList } from "../../Course";
+import Avatar from '../../assets/avatar.jpg'
 
 interface IProps {
   user: IUser;

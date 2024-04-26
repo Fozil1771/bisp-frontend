@@ -8,14 +8,19 @@ import { router } from "./router";
 import store from './store';
 const persistor = persistStore(store)
 
+
 function App() {
 
   return (
+
     <Provider store={store}>
       <PersistGate persistor={persistor}>
+
         <RouterProvider router={router} fallbackElement={<p>Initial Load...</p>} />
+
       </PersistGate>
     </Provider>
+
   )
 }
 

@@ -28,12 +28,11 @@ const CourseDetail = () => {
     fetchCourseDetails();
   }, [id]);
 
+  console.log("course", course);
 
   if (loading) {
     return <p>Loading...</p>;
   }
-
-  console.log(course);
 
 
   return (
@@ -44,7 +43,7 @@ const CourseDetail = () => {
       <div>
         <img
           className="w-full h-[350px] object-cover mb-4 rounded-md"
-          src={`http://localhost:3003/public/uploads/${course.banner}`}
+          src={`http://localhost:3003/public/course/${course.banner}`}
           alt={`Image for ${course.title}`}
         />
         <h1 className="text-3xl font-semibold mb-4">{course.title}</h1>

@@ -28,6 +28,12 @@ export const getAllTeacherList = async () => {
   return response.data;
 }
 
+
+export const getAllCourseList = async () => {
+  const response = await api.get(`/course`)
+  return response.data;
+}
+
 export const getTeacherById = async (teacherId: string) => {
   const response = await api.get(`/teacher/${teacherId}`)
   return response.data;
@@ -65,6 +71,12 @@ export const createCourseRating = async (courseId: string, studentId: string, da
 // /course/:teacherId/:courseId
 export const createCourseChapter = async (teacherId: string, courseId: string, data) => {
   const response = await api.post(`/course/${teacherId}/${courseId}`, data)
+  return response.data;
+}
+
+
+export const updateCourseChapter = async (teacherId: string, courseId: string, chapterId: string, data) => {
+  const response = await api.put(`/course/${teacherId}/${courseId}/chapter/${chapterId}`, data)
   return response.data;
 }
 

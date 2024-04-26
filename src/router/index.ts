@@ -12,6 +12,8 @@ import AboutPage from "../views/About";
 import TeacherDetailsPage from "../views/Admin/teacherDetailsPage";
 import SingleCourseContents from "../views/CoursePublic/SingleCourseContents";
 import SettingsPage from "../views/Profile/Settings";
+import CheckoutPage from "../views/Checkout";
+import CourseDetailsPage from "../views/Admin/CourseDetailsPage";
 
 const isAuthenticated = () => {
   // Replace 'auth' with the actual slice name in your Redux store
@@ -88,6 +90,11 @@ export const router = createBrowserRouter([
         Component: TeacherDetailsPage
       },
       {
+        path: "course-details/:courseId",
+        action: isAdmin,
+        Component: CourseDetailsPage
+      },
+      {
         path: "course/:id/chapters",
         Component: SingleCourseContents,
       },
@@ -103,7 +110,10 @@ export const router = createBrowserRouter([
         path: "about-us",
         Component: AboutPage,
       },
-
+      {
+        path: "checkout/:courseId",
+        Component: CheckoutPage,
+      },
     ],
   },
   {

@@ -14,6 +14,7 @@ import {
 import authReducer from './Auth/authSlice';
 import teachersReducer from './Users/teachersSlice';
 import courseReducer from './Course/courseSlice';
+import cartReducer from './Cart/cartSlice';
 
 
 const persistConfig = {
@@ -24,7 +25,8 @@ const persistConfig = {
 export const rootReducers = combineReducers({
   auth: authReducer,
   teachers: teachersReducer,
-  courses: courseReducer
+  courses: courseReducer,
+  cart: cartReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducers)

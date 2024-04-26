@@ -27,6 +27,7 @@ const Main = () => {
   }, []);
   return (
     <>
+
       <Hero />
       <div className='container mx-auto'>
         <FeaturedCoursesList courses={courses} title={"Featured Courses"} />

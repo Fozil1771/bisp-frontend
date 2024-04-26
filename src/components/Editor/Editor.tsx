@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef } from "react";
 import EditorJS from "@editorjs/editorjs";
 import { EDITOR_JS_TOOLS } from "./tools";
+import Image from "@editorjs/image";
 
 const Editor = ({ data, onChange, editorblock, onReady }) => {
   const ref = useRef();

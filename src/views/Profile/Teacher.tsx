@@ -29,7 +29,7 @@ const Teacher: React.FC<IProps> = ({ user }) => {
     fetchData();
   }, [user.id])
 
-  console.log(participants);
+  console.log(courses);
 
 
   return (

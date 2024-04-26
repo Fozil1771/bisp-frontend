@@ -1,3 +1,32 @@
+/* For h1 */
+h1 {
+	@apply text-4xl font-bold mb-4;
+}
+
+/* For h2 */
+h2 {
+	@apply text-3xl font-semibold  mb-3;
+}
+
+/* For h3 */
+h3 {
+	@apply text-2xl font-semibold  mb-2;
+}
+
+/* For ol */
+ol {
+	@apply list-inside;
+}
+
+/* For ul */
+ul {
+	@apply list-inside;
+}
+
+.course-chapter--countent img {
+	@apply w-[500px];
+}
+
 .sp {
 	position: absolute;
 	top: 50%;
