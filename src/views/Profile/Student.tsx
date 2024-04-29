@@ -3,7 +3,9 @@ import { IUser } from "../../types"
 import { getEnrolledCourses } from "../../api";
 import { useParams } from "react-router-dom";
 import { CourseList } from "../../Course";
-import Avatar from '../../assets/avatar.jpg'
+import AvatarIcon from '../../assets/avatar.jpg'
+import { Avatar } from 'primereact/avatar';
+
 
 interface IProps {
   user: IUser;
@@ -28,20 +30,21 @@ const Student: React.FC<IProps> = ({ user }) => {
   return (
     <div className="">
       <header className="bg-gray-900 mx-auto">
-        <div className=" p-8 lg:px-48">
+        <div className=" p-8 max-w-7xl mx-auto px-4">
 
           <div className="flex mb-5 items-center gap-4">
-            <img
-              src={user.imageUrl ? `http://localhost:3003/public/profile/${user.imageUrl}` : Avatar}
-              alt="avatar"
-              className="w-20 h-20 rounded-full object-fit"
-            />
+
+            <Avatar
+              icon="pi pi-user"
+              image={user.imageUrl ? `http://localhost:3003/public/profile/${user.imageUrl}` : ''} size="xlarge" shape="circle" />
+
+
             <h5 className="text-3xl text-white">@{user.username}</h5>
           </div>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 mt-3">
               {/* <span className="text-white font-bold">{courses.length}</span> */}
-              <span className="text-gray-500 font-normal">Courses</span>
+              <span className="text-gray-500 font-normal">Courses: {enrolledCourses.length}</span>
             </div>
 
           </div>
@@ -53,7 +56,7 @@ const Student: React.FC<IProps> = ({ user }) => {
       </header >
       {/* Add more user-related fields as needed */}
 
-      <div className="container mx-auto">
+      <div className="max-w-7xl mx-auto px-4">
         <CourseList courses={enrolledCourses} title={"Enrolled Courses"} />
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { Navigate, createBrowserRouter, redirect } from "react-router-dom";
 import HomePage from "../views/HomePage";
+import BusinessPage from "../views/Business";
 import Signup from "../views/Auth/Signup"; // Assuming you have a Signup component
 import Login from "../views/Auth/Login";
 import Profile from "../views/Profile";
@@ -14,6 +15,7 @@ import SingleCourseContents from "../views/CoursePublic/SingleCourseContents";
 import SettingsPage from "../views/Profile/Settings";
 import CheckoutPage from "../views/Checkout";
 import CourseDetailsPage from "../views/Admin/CourseDetailsPage";
+import ApplyForm from "../components/ApplyForm";
 
 const isAuthenticated = () => {
   // Replace 'auth' with the actual slice name in your Redux store
@@ -54,6 +56,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: HomePage,
+      },
+      {
+        path: "/business",
+        Component: BusinessPage,
+      },
+      {
+        path: "/business/apply",
+        Component: ApplyForm,
       },
       {
         path: "/login",

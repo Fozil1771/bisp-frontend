@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+
 const Teacherlist = ({ teacherList }) => {
   return (
+
     <div className="mx-auto p-8 lg:px-48">
       <h2 className="text-2xl font-bold mb-4">Teacher List</h2>
       <div className="overflow-x-auto">

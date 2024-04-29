@@ -10,7 +10,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <>
-      <div className="container mx-auto">
+      <div className="container mx-auto 2xl:px-10">
 
         {children}
       </div>

@@ -3,17 +3,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { IAuthState } from '../../types'
 import { logoutAction } from '../../store/Auth/authAction'
+import { Avatar } from 'primereact/avatar'
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state: IAuthState) => state.auth.isAuthenticated)
+  const user = useSelector((state: IAuthState) => state.auth.user)
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const location = useLocation();
 
   const links = [
-    { text: 'Home', to: '/' },
-    { text: 'Course', to: '/courses/all' },
+    { text: 'Courses', to: '/courses/all' },
     { text: 'About us', to: '/about-us' },
     { text: 'Login', to: '/login', hide: isAuthenticated },
     { text: 'SignUp', to: '/signup', hide: isAuthenticated },
@@ -63,7 +64,7 @@ const Navbar = () => {
 
               {/* Profile dropdown */}
               <div className="ml-3 relative">
-                <div>
+                {isAuthenticated && <div>
                   <button
                     className="max-w-xs bg-gray-800 text-white rounded-full flex items-center text-sm focus:outline-none focus:ring-offset-gray-800 focus:ring-white"
                     id="user-menu"
@@ -72,9 +73,19 @@ const Navbar = () => {
                     onClick={() => setShowProfileMenu(!showProfileMenu)}
                   >
                     <span className="sr-only">Open user menu</span>
-                    Profile
+
+                    <div className='flex gap-2 items-center'>
+                      <Avatar
+                        className='bg-gray-900'
+                        image={`http://localhost:3003/public/profile/${user.imageUrl}`}
+                        icon="pi pi-user"
+                        size="small"
+                        shape="circle" />
+                      <span>@{user.username}</span>
+                    </div>
+
                   </button>
-                </div>
+                </div>}
                 {/*  
                 Profile dropdown panel, show/hide based on dropdown state.
 

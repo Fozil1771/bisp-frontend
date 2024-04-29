@@ -4,6 +4,7 @@ import { getCourseList } from '../../api';
 import { CourseList } from '../../Course';
 import Navbar from '../../components/global/Navbar';
 import Footer from '../../components/global/Footer';
+import CourseCollection from './CourseCollection';
 
 const AllCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -25,9 +26,9 @@ const AllCourses = () => {
   return (
     <>
       <Navbar />
-      <Hero />
       <div className='container mx-auto'>
-        <CourseList courses={courses} title={"All Courses"} />
+        {/* <CourseList courses={courses} title={"All Courses"} /> */}
+        <CourseCollection courses={courses} />
       </div>
       <Footer />
     </>

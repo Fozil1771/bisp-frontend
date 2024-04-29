@@ -91,6 +91,12 @@ export const deleteCourseChapter = async (teacherId: string, courseId: string, c
 
 // student
 
+
+export const getStudentById = async (id: string) => {
+  const response = await api.get(`/student/${id}`)
+  return response.data;
+}
+
 export const getEnrolledCourses = async (id: string) => {
   const response = await api.get(`/student/${id}/enrolled-courses`)
   return response.data;
@@ -108,6 +114,13 @@ export const enrollToCourse = async (studentId: string, courseId: string) => {
 
 export const editStudentById = async (studentId: string, data) => {
   const response = await api.post(`/student/update/${studentId}`, data)
+  return response.data;
+}
+
+
+export const trackChapterProgress = async (studentId: string, chapterId: string, data) => {
+  const response = await api.post(`/student/${studentId}/${chapterId}/progress`, data);
+  console.log("studentId", studentId)
   return response.data;
 }
 

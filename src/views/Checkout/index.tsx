@@ -1,19 +1,52 @@
 import { useSelector } from "react-redux";
 import { IAuthState } from "../../types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { InputMask } from "primereact/inputmask";
+import { useState } from "react";
+import { enrollToCourse } from "../../api";
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const CheckoutPage = () => {
 
   const user = useSelector((state: IAuthState) => state.auth?.user);
   const cart = useSelector((state) => state.cart?.cart);
+  const [cardNumber, setCardNumber] = useState();
+  const [cardDate, setCardDate] = useState();
+  const [cardCvv, setCardCvv] = useState();
+
+  const navigate = useNavigate();
+
+  const notify = (msg: string) => toast(msg);
+  const handlePayment = async (e) => {
+    e.preventDefault()
+    try {
+      await enrollToCourse(user.id, cart.id);
+      notify("Course enrolled successfully");
+      setTimeout(() => navigate('/course/' + cart.id), 3000)
+    } catch (error) {
+      console.log("Message: ", error)
+    }
+  }
 
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <Link to={`/course/${cart.id}`} className="w-[200px] block mb-5 border border-transparent underline">Back to course page</Link>
-
+        <Toaster position="top-center"
+          reverseOrder={false}
+          gutter={8}
+          containerClassName=""
+          containerStyle={{}}
+          toastOptions={{
+            className: '',
+            duration: 3000,
+            style: {
+              background: '#5fbc1d',
+              color: '#fff',
+            },
+          }} />
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="flex flex-col md:flex-row">
             <div className="md:w-1/2 p-4">
@@ -37,7 +70,7 @@ const CheckoutPage = () => {
             </div>
 
             <div className="md:w-1/2 p-4 bg-gray-50">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handlePayment}>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Email
@@ -56,34 +89,23 @@ const CheckoutPage = () => {
                   <label htmlFor="card" className="block text-sm font-medium text-gray-700 mt-3">
                     Card Number
                   </label>
-                  <input
-                    type="text"
-                    id="card"
-                    placeholder="Enter your card number"
-                    className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2"
-                  />
+
+                  <InputMask value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} mask="9999 9999 9999 9999" placeholder="9999 9999 9999 9999" />
+
                   <div className="flex gap-2">
                     <div>
                       <label htmlFor="exp-date" className="block text-sm font-medium text-gray-700 mt-3">
                         Expiration Date
                       </label>
-                      <input
-                        type="text"
-                        id="exp-date"
-                        placeholder="01/26"
-                        className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2"
-                      />
+                      <InputMask value={cardDate} onChange={(e) => setCardDate(e.target.value)} mask="99/99" placeholder="99/99" />
+
+
                     </div>
                     <div>
                       <label htmlFor="cvv" className="block text-sm font-medium text-gray-700 mt-3">
                         CVV
                       </label>
-                      <input
-                        type="text"
-                        id="cvv"
-                        placeholder="CVV"
-                        className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2"
-                      />
+                      <InputMask value={cardCvv} onChange={(e) => setCardCvv(e.target.value)} mask="123" placeholder="123" />
                     </div>
                   </div>
                 </div>

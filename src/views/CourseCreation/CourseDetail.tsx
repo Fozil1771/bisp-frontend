@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getCourseByTeacher } from '../../api';
 import CourseChapters from './CourseChapters';
+import { BreadCrumb } from 'primereact/breadcrumb';
 
 const CourseDetail = () => {
   const { id, teacherId } = useParams();
@@ -38,9 +39,19 @@ const CourseDetail = () => {
   return (
 
 
-    <div className="container mx-auto">
-      <Link to={'/profile'} className='my-10 p-4 block border cursor-pointer border-gray-300 rounded-md w-max'>Back to courses</Link>
-      <div>
+    <div className="max-w-7xl mx-auto px-4">
+      {/* <Link to={'/profile'} className='my-10 p-4 block border cursor-pointer border-gray-300 rounded-md w-max' > Back to courses</Link> */}
+      <BreadCrumb
+        className='px-0'
+        model={
+          [
+            { label: 'Dasboard', url: '/profile' },
+            { label: course.title, }
+          ]
+        }
+        home={{ icon: 'pi pi-home', url: '/' }}
+      />
+      <div className='mt-4'>
         <img
           className="w-full h-[350px] object-cover mb-4 rounded-md"
           src={`http://localhost:3003/public/course/${course.banner}`}

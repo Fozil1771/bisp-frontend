@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { createCourseRating, enrollToCourse, getCoursePublicById } from '../../api';
+import { createCourseRating, getCoursePublicById } from '../../api';
 import Loader from '../../components/Loader';
 import Navbar from '../../components/global/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { IAuthState } from '../../types';
 import toast, { Toaster } from 'react-hot-toast';
 import { addCourseToCartAction } from '../../store/Cart/cartAction';
-import Avatar from '../../assets/avatar.jpg'
 import { estimateReadingTime } from '../../utils';
+import { Rating } from 'primereact/rating';
+import { BreadCrumb } from 'primereact/breadcrumb';
+import Reviews from './Reviews';
+import { Avatar } from 'primereact/avatar';
+import { ProgressBar } from 'primereact/progressbar';
+
 
 
 const SingleCourse = () => {
@@ -17,9 +22,10 @@ const SingleCourse = () => {
   const dispatch = useDispatch();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [courseProgress, setCourseProgress] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [review, setReview] = useState({
-    rating: 0,
+    rating: null,
     content: '',
   });
   const [submittingReview, setSubmittingReview] = useState(false);
@@ -44,6 +50,18 @@ const SingleCourse = () => {
 
     fetchCourse();
 
+    if (user && course.chapters.length > 0) {
+      const completedChaptersCount = course?.chapters.reduce((count, chapter) => {
+        const hasProgress = user.progress.some((p) => p.chapterId === chapter.id && p.isCompleted);
+        return count + (hasProgress ? 1 : 0);
+      }, 0);
+
+      const progressPercentage = course?.chapters.length ? (completedChaptersCount / course?.chapters.length) * 100 : 0;
+      setCourseProgress(progressPercentage);
+    }
+
+
+
   }, [id]);
 
   if (user && user.userType == 'student') {
@@ -55,7 +73,9 @@ const SingleCourse = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
-    const parsedValue = name === 'rating' ? Number(value) : value;
+    const parsedValue = value;
+
+    console.log(name)
 
     setReview((prevData) => ({ ...prevData, [name]: parsedValue }));
   };
@@ -102,6 +122,8 @@ const SingleCourse = () => {
     // }
   }
 
+
+
   return (
     <>
       <Navbar />
@@ -121,66 +143,102 @@ const SingleCourse = () => {
         }} />
       <div className='max-w-7xl mx-auto h-[100vh] px-4'>
         {/* Sidebar */}
+        <BreadCrumb
+          className='px-0'
+          model={
+            [
+              { label: 'Courses', url: '/courses/all' },
+            ]
+          }
+          home={{ icon: 'pi pi-home', url: '/' }}
+        />
         {loading ? <Loader loading={loading} /> : (
-          <div className='mt-4'>
-            <h1 className="text-3xl font-bold mb-4">{course?.title}</h1>
-            <div className="flex flex-col md:flex-row md:justify-between mt-5">
-              {/* Course Details */}
-              <div className="md:w-3/4 flex gap-5">
-                <div>
 
-                  <img
-                    className="max-w-[400px] h-[250px] object-cover mb-4 rounded-md"
-                    src={`http://localhost:3003/public/course/${course.banner}`}
-                    alt={`Image for ${course.title}`}
-                  />
-                  <p className="text-lg mb-4">{course?.description}</p>
-                  <p className="text-lg">Type: {course?.type}</p>
-                  <p className="text-lg">Price: ${course?.price}</p>
+          <>
+            <div className='mt-4'>
+              <div className=''>
+                <h1 className="text-3xl font-bold mb-4">{course?.title}</h1>
 
 
-                  <h4 className='text-lg'>Enrolled: {course?.participants?.length}</h4>
+                {courseProgress && (
+                  <>
+                    <h5>Your Progress:</h5>
+                    <ProgressBar value={courseProgress}></ProgressBar>
+                  </>
+                )}
 
-                  {user && user.userType == 'student' && !course?.participants.filter((participant) => participant.id === user.id)[0] && <button onClick={() => { handleSubscribeToCourse(course) }} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md inline-block">
-                    Subscribe to Course
-                  </button>}
-                  {/* {user && user.userType == 'student' && !course?.participants.filter((participant) => participant.id === user.id)[0] && <Link to={`/checkout/${course.id}`} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md inline-block">
+              </div>
+              <div className="flex flex-col md:flex-row md:justify-between mt-5">
+                {/* Course Details */}
+                <div className="md:w-3/4 flex gap-5">
+                  <div>
+
+                    <img
+                      className="max-w-[400px] h-[250px] object-cover mb-4 rounded-md"
+                      src={`http://localhost:3003/public/course/${course.banner}`}
+                      alt={`Image for ${course.title}`}
+                    />
+                    <p className="text-lg mb-4">{course?.description}</p>
+                    <p className="text-lg">Type: {course?.type}</p>
+                    <p className="text-lg">Price: ${course?.price}</p>
+
+
+                    <h4 className='text-lg'>Enrolled: {course?.participants?.length}</h4>
+
+                    <div className='mt-4'>
+                      <div className=' flex gap-2 items-center'>
+                        <Avatar
+                          className='bg-gray-900'
+                          image={`http://localhost:3003/public/profile/${user.imageUrl}`}
+                          icon="pi pi-user"
+                          size="small"
+                          shape="circle" />
+                        <span>{`${user.firstName} ${user.firstName}`}</span>
+                      </div>
+
+
+                    </div>
+
+                    {user && user.userType == 'student' && !course?.participants.filter((participant) => participant.id === user.id)[0] && <button onClick={() => { handleSubscribeToCourse(course) }} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md inline-block">
+                      Subscribe to Course
+                    </button>}
+                    {/* {user && user.userType == 'student' && !course?.participants.filter((participant) => participant.id === user.id)[0] && <Link to={`/checkout/${course.id}`} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md inline-block">
                   Subscribe to Course
                 </Link>} */}
+                  </div>
+                  <div>
+                    <h5 className='text-lg'>Table of content</h5>
+                    <ul>
+                      {course?.chapters.map((chapter) => (
+                        <li className="" key={chapter.id}>{chapter.title} - {estimateReadingTime(chapter.html)} minutes</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                <div>
-                  <h5 className='text-lg'>Table of content</h5>
-                  <ul>
-                    {course?.chapters.map((chapter) => (
-                      <li className="" key={chapter.id}>{chapter.title} - {estimateReadingTime(chapter.html)} minutes</li>
-                    ))}
-                  </ul>
+                {/* Link to Chapters */}
+                <div className="md:w-1/4 mt-4 md:mt-0">
+                  {user.userType == 'student' && course?.participants.filter((participant) => participant.id === user.id)[0] &&
+                    <Link to={`/course/${id}/chapters`} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-block">
+                      View Chapters
+                    </Link>
+                  }
+
+                  {user && user.userType == 'teacher' &&
+                    <Link to={`/course/${id}/chapters`} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-block">
+                      View Chapters
+                    </Link>
+
+                  }
+                  {!user && <Link to={'/login'} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-block">Login to subscribe</Link>}
+
                 </div>
               </div>
-              {/* Link to Chapters */}
-              <div className="md:w-1/4 mt-4 md:mt-0">
-                {user.userType == 'student' && course?.participants.filter((participant) => participant.id === user.id)[0] &&
-                  <Link to={`/course/${id}/chapters`} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-block">
-                    View Chapters
-                  </Link>
-                }
 
-                {user && user.userType == 'teacher' &&
-                  <Link to={`/course/${id}/chapters`} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-block">
-                    View Chapters
-                  </Link>
-
-                }
-                {!user && <Link to={'/login'} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-block">Login to subscribe</Link>}
-
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <h2 className="text-xl font-semibold mb-4">Leave a Review</h2>
-              <div className="flex items-center mb-4">
-                <label htmlFor="rating" className="mr-2">Rating:</label>
-                <input
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-4">Leave a Review</h2>
+                <div className="flex items-center mb-4">
+                  <label htmlFor="rating" className="mr-2">Rating:</label>
+                  {/* <input
                   type="number"
                   id="rating"
                   name="rating"
@@ -189,47 +247,32 @@ const SingleCourse = () => {
                   value={review.rating}
                   onChange={handleChange}
                   className="border rounded-md p-2 w-20"
-                />
-              </div>
-              <textarea
-                value={review.content}
-                name="content"
-                onChange={handleChange}
-                className="border rounded-md p-2 w-full h-32 mb-4"
-                placeholder="Enter your review..."
-              ></textarea>
-              <button
-                onClick={handleReviewSubmit}
-                disabled={submittingReview}
-                className=" bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-md inline-block"
-              >
-                {submittingReview ? 'Submitting...' : 'Submit Review'}
-              </button>
-            </div>
-
-            <div className="mt-8 mb-8">
-              <h2 className="text-xl font-semibold mb-4">Reviews</h2>
-              {reviews.map((review, index) => (
-                <div>
-                  <div key={index} className="border rounded-md p-4 mb-4">
-                    <div className='flex items-start justify-between'>
-                      <div>
-                        <p className="font-semibold">Rating: {review.rating}</p>
-                        <div className='flex items-center gap-2'>
-                          {review.reviewer.imageUrl ? <img className='w-10 h-10 rounded-full' src={`http://localhost:3003/public/profile/${review.reviewer.imageUrl}`} alt="" /> : <img className='w-10 h-10 rounded-full' src={Avatar} alt="" />}
-                          <p className='font-semibold'>{review.reviewer.username}</p>
-                        </div>
-                        <p className='mt-2'>{review.content}</p>
-                      </div>
-                      {user && user.id == review.reviewer.id && <button onClick={() => { handleDeleteReview(review.id) }}>Delete</button>}
-                    </div>
-
-                  </div>
+                /> */}
+                  <Rating name="rating" className='text-amber-300' value={review.rating} onChange={handleChange} />
 
                 </div>
-              ))}
+                <textarea
+                  value={review.content}
+                  name="content"
+                  onChange={handleChange}
+                  className="border rounded-md p-2 w-full h-32 mb-4"
+                  placeholder="Enter your review..."
+                ></textarea>
+                <button
+                  onClick={handleReviewSubmit}
+                  disabled={submittingReview}
+                  className=" bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-md inline-block"
+                >
+                  {submittingReview ? 'Submitting...' : 'Submit Review'}
+                </button>
+              </div>
+
+              <div className="mt-8 mb-8">
+
+                <Reviews reviews={reviews} />
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </>

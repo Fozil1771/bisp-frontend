@@ -13,6 +13,8 @@ const CourseCreate: React.FC = () => {
   const { teacherId } = useParams();
   const navigate = useNavigate();
 
+  console.log("teacherId", teacherId)
+
   const [courseImage, setCourseImage] = useState();
   const [courseImageCompressed, setCourseImageCompressed] = useState();
   const [preview, setPreview] = useState()
@@ -90,7 +92,7 @@ const CourseCreate: React.FC = () => {
   }, [courseImage])
 
   return (
-    <div className="container mx-auto mt-8">
+    <div className="container mx-auto mt-8 2xl:px-10">
       <h1 className="text-2xl font-semibold mb-4">Create a New Course</h1>
       <form onSubmit={handleFormSubmit}>
         <div className="mb-4">

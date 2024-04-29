@@ -3,7 +3,8 @@ import { IUser } from "../../types";
 import { getAllCoursesByTeacher, getAllEnrolledStudentsByTeacher } from "../../api";
 import { Link } from "react-router-dom";
 import { truncateText } from "../../utils";
-import Avatar from '../../assets/avatar.jpg'
+import AvatarIcon from '../../assets/avatar.jpg'
+import { Avatar } from "primereact/avatar";
 
 interface IProps {
   user: IUser;
@@ -35,14 +36,13 @@ const Teacher: React.FC<IProps> = ({ user }) => {
   return (
     <>
       <header className="bg-gray-900 mx-auto">
-        <div className=" p-8 lg:px-48">
+        <div className=" py-8 max-w-7xl mx-auto px-4">
 
           <div className="flex mb-5 items-center gap-4">
-            <img
-              src={user.imageUrl ? `http://localhost:3003/public/profile/${user.imageUrl}` : Avatar}
-              alt="avatar"
-              className="w-20 h-20 rounded-full object-fit"
-            />
+
+            <Avatar
+              icon="pi pi-user"
+              image={user.imageUrl ? `http://localhost:3003/public/profile/${user.imageUrl}` : ''} size="xlarge" shape="circle" />
             <h5 className="text-3xl text-white">@{user.username}</h5>
           </div>
           <div className="flex items-center gap-6">
@@ -63,7 +63,7 @@ const Teacher: React.FC<IProps> = ({ user }) => {
       </header >
 
 
-      <div className="container my-4 mx-auto">
+      <div className="max-w-7xl px-4 my-4 mx-auto">
         <h3 className="text-2xl font-semibold mb-6">Courses</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { createCourseChapter } from '../../api';
-import { Editor } from '../../components/Editor';
+import { Checkbox } from "primereact/checkbox";
+
 import { INITIAL_DATA } from '../../constants';
 import EditorQ from '../../components/Editor/QuilEditor';
 // import { Editor } from 'primereact/editor';
 
 
 const ChapterCreate = ({ course, setLoading, updateChapterList }) => {
-  const { teacherId, id, html } = course.course;
+  const { teacherId, id, html } = course;
 
   const [text, setText] = useState('');
 
@@ -53,7 +54,7 @@ const ChapterCreate = ({ course, setLoading, updateChapterList }) => {
 
 
   return (
-    <div className="mx-auto mt-8 p-6 bg-white rounded-md shadow-md">
+    <div className="mx-auto p-6 bg-white rounded-md">
       <h2 className="text-2xl font-semibold mb-4">Create New Course Chapter</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -84,7 +85,7 @@ const ChapterCreate = ({ course, setLoading, updateChapterList }) => {
           <EditorQ value={text} setValue={setText} />
         </div>
 
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -110,6 +111,26 @@ const ChapterCreate = ({ course, setLoading, updateChapterList }) => {
             />
             <span className="text-sm font-medium text-gray-600">Free</span>
           </label>
+        </div> */}
+
+        <div className="flex flex-wrap justify-content-center gap-3 mb-3">
+          <div className="flex align-items-center">
+            <Checkbox
+              className='border rounded-md pb-2'
+              inputId="isPublished"
+              name="isPublished"
+              onChange={handleChange}
+              checked={formData.isPublished} />
+            <label htmlFor="isPublished" className="ml-2">isPublished</label>
+          </div>
+          <div className="flex align-items-center">
+            <Checkbox
+              className='border rounded-md pb-2'
+              inputId="isFree"
+              name="isFree"
+              onChange={handleChange} checked={formData.isFree} />
+            <label htmlFor="isFree" className="ml-2">isFree</label>
+          </div>
         </div>
 
         <button

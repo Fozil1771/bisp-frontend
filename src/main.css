@@ -1,30 +1,61 @@
 /* For h1 */
-h1 {
+.course-chapter--countent h1 {
 	@apply text-4xl font-bold mb-4;
 }
 
 /* For h2 */
-h2 {
+.course-chapter--countent h2 {
 	@apply text-3xl font-semibold  mb-3;
 }
 
 /* For h3 */
-h3 {
+.course-chapter--countent h3 {
 	@apply text-2xl font-semibold  mb-2;
-}
-
-/* For ol */
-ol {
-	@apply list-inside;
-}
-
-/* For ul */
-ul {
-	@apply list-inside;
 }
 
 .course-chapter--countent img {
 	@apply w-[500px];
+}
+
+.course-chapter--countent p {
+	@apply leading-normal my-2;
+}
+
+.course-chapter--countent ul {
+	@apply list-disc list-inside my-2;
+}
+
+.course-chapter--countent ol {
+	@apply list-decimal list-inside my-2;
+}
+
+.course-chapter--countent a {
+	@apply text-blue-500 hover:underline;
+}
+
+.course-chapter--countent img {
+	@apply mx-auto my-4;
+}
+
+.course-chapter--countent table {
+	@apply w-full border-collapse my-4;
+}
+
+.course-chapter--countent th,
+.course-chapter--countent td {
+	@apply border p-2;
+}
+
+.course-chapter--countent blockquote {
+	@apply italic border-l-4 border-gray-500 pl-2 my-4;
+}
+
+.course-chapter--countent pre {
+	@apply bg-gray-100 p-4 my-4;
+}
+
+.course-chapter--countent code {
+	@apply font-mono bg-gray-100 p-1 rounded;
 }
 
 .sp {
@@ -68,4 +99,35 @@ ul {
 
 .swiper-pagination-bullet {
 	background-color: #fff !important;
+}
+
+/* login */
+
+.input-password input {
+	@apply focus:shadow-none;
+}
+
+/* rating */
+
+.p-rating-item.p-rating-item-active path {
+	fill: gold;
+}
+
+/* confirm dialog */
+
+.p-confirm-popup-footer {
+	@apply flex justify-end gap-4;
+}
+
+/* tab menu */
+
+.p-tabmenuitem.p-highlight,
+.p-tabmenuitem.p-highlight a {
+	@apply bg-gray-800 text-white;
+}
+
+/* avatar */
+
+.p-avatar-image img {
+	@apply aspect-[1] object-cover;
 }
